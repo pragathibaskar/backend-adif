@@ -97,20 +97,19 @@ public class ContableController {
 	 
 	 @Autowired
 	 private BudgetDb bdb;
-	 
-	 @DeleteMapping("/codigo/delete/{codigo_sap}/{codigo_socieded}/{timestamp}")
-	   void deleteCodigo(@PathVariable("codigo_sap") String sap,@PathVariable("codigo_socieded") String code,@PathVariable("timestamp") long ts)
+	  
+        @DeleteMapping("/codigo")
+	   void deleteCodigo(@RequestBody customProvionTo c)
 	   {
-		 Date date = new Date(ts);
+		 Date date = new Date(c.getTimestamp());
 		 Composite obj = new Composite();
-		 obj.setCodigo(sap);
-		 obj.setCod_sociedad(code);
+		 obj.setCodigo(c.getCodigo_sap_expediente());
+		 obj.setCod_sociedad(c.getCod_sociedad());
 		 obj.setPeriodo(date);
 		 Provisionados pro = new Provisionados();
 		 pro.setKey(obj);
          codigosvc.deleteById(pro);
-	   }
-	 
+	   } 
 	
 	 @GetMapping("/codigo/{ts}/{page}/{size}")
 	 Page<Provisionados> listAll(@PathVariable("ts") long ts,@PathVariable("page") int page,@PathVariable("size") int size)
